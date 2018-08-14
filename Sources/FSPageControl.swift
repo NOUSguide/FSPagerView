@@ -27,9 +27,9 @@ open class FSPageControl: UIControl {
         }
     }
     
-    /// The spacing to use of page indicators in the page control.
+    /// The width of a page Indicator. This value gets ignored when images are used instead
     @IBInspectable
-    open var itemSpacing: CGFloat = 6 {
+    open var itemWidth: CGFloat = 6 {
         didSet {
             self.setNeedsUpdateIndicators()
         }
@@ -104,30 +104,28 @@ open class FSPageControl: UIControl {
     open override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         
-        let diameter = self.itemSpacing
-        let spacing = self.interitemSpacing
-        var x: CGFloat = {
+        let offsetY = self.contentView.bounds.midY
+        let contentSize = self.contentSize
+        
+        let offsetX: CGFloat = {
             switch self.contentHorizontalAlignment {
             case .left, .leading:
                 return 0
             case .center, .fill:
-                let midX = self.contentView.bounds.midX
-                let amplitude = CGFloat(self.numberOfPages/2) * diameter + spacing*CGFloat((self.numberOfPages-1)/2)
-                return midX - amplitude
+                return self.contentView.bounds.midX - floor(contentSize.width / 2)
             case .right, .trailing:
-                let contentWidth = diameter*CGFloat(self.numberOfPages) + CGFloat(self.numberOfPages-1)*spacing
-                return contentView.frame.width - contentWidth
+                return contentView.frame.width - contentSize.width
             }
         }()
-        for (index,value) in self.indicatorLayers.enumerated() {
+        for (index, shapeLayer) in self.indicatorLayers.enumerated() {
             let state: UIControlState = (index == self.currentPage) ? .selected : .normal
             let image = self.images[state]
-            let size = image?.size ?? CGSize(width: diameter, height: diameter)
-            let origin = CGPoint(x: x - (size.width-diameter)*0.5, y: self.contentView.bounds.midY-size.height*0.5)
-            value.frame = CGRect(origin: origin, size: size)
-            x = x + spacing + diameter
+            
+            let size = image?.size ?? CGSize(width: self.itemWidth, height: self.itemWidth)
+            let origin = CGPoint(x: offsetX + (size.width + self.interitemSpacing) * CGFloat(index), y: offsetY - floor(size.height * 0.5))
+            
+            shapeLayer.frame = CGRect(origin: origin, size: size)
         }
-        
     }
     
     /// Sets the stroke color for page indicators to use for the specified state. (selected/normal).
@@ -258,7 +256,7 @@ open class FSPageControl: UIControl {
                 layer.strokeColor = strokeColor?.cgColor
                 layer.fillColor = fillColor?.cgColor
             }
-            layer.path = self.paths[state]?.cgPath ?? UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: self.itemSpacing, height: self.itemSpacing)).cgPath
+            layer.path = self.paths[state]?.cgPath ?? UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: self.itemWidth, height: self.itemWidth)).cgPath
         }
         if let transform = self.transforms[state] {
             layer.transform = CATransform3DMakeAffineTransform(transform)
@@ -296,6 +294,15 @@ open class FSPageControl: UIControl {
         self.setNeedsUpdateIndicators()
         self.updateIndicatorsIfNecessary()
         CATransaction.commit()
+    }
+    
+    fileprivate var contentSize: CGSize {
+        let size = self.images[.normal]?.size ?? CGSize(width: self.itemWidth, height: self.itemWidth)
+        
+        let width = CGFloat(self.numberOfPages) * size.width // total images width
+            + ((CGFloat(self.numberOfPages) - 1)  * self.interitemSpacing) // total spacings
+        
+        return CGSize(width: width, height: size.height)
     }
     
 }

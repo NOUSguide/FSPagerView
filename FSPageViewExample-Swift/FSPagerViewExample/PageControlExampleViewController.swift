@@ -67,8 +67,8 @@ class PageControlExampleViewController: UIViewController,UITableViewDataSource,U
     
     // ⭐️
     fileprivate var starPath: UIBezierPath {
-        let width = self.pageControl.itemSpacing
-        let height = self.pageControl.itemSpacing
+        let width = self.pageControl.itemWidth
+        let height = self.pageControl.itemWidth
         let starPath = UIBezierPath()
         starPath.move(to: CGPoint(x: width*0.5, y: 0))
         starPath.addLine(to: CGPoint(x: width*0.677, y: height*0.257))
@@ -86,8 +86,8 @@ class PageControlExampleViewController: UIViewController,UITableViewDataSource,U
     
     // ❤️
     fileprivate var heartPath: UIBezierPath {
-        let width = self.pageControl.itemSpacing
-        let height = self.pageControl.itemSpacing
+        let width = self.pageControl.itemWidth
+        let height = self.pageControl.itemWidth
         let heartPath = UIBezierPath()
         heartPath.move(to: CGPoint(x: width*0.5, y: height))
         heartPath.addCurve(
@@ -166,7 +166,7 @@ class PageControlExampleViewController: UIViewController,UITableViewDataSource,U
             let cell = tableView.dequeueReusableCell(withIdentifier: "slider_cell")!
             let slider = cell.contentView.subviews.first as! UISlider
             slider.tag = indexPath.section
-            slider.value = Float((self.pageControl.itemSpacing-6.0)/10.0)
+            slider.value = Float((self.pageControl.itemWidth-6.0)/10.0)
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "slider_cell")!
@@ -240,7 +240,7 @@ class PageControlExampleViewController: UIViewController,UITableViewDataSource,U
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         switch sender.tag {
         case 1:
-            self.pageControl.itemSpacing = 6.0 + CGFloat(sender.value*10.0) // [6 - 16]
+            self.pageControl.itemWidth = 6.0 + CGFloat(sender.value*10.0) // [6 - 16]
             // Redraw UIBezierPath
             if [3,4].contains(self.styleIndex) {
                 let index = self.styleIndex
