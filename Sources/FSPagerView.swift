@@ -505,6 +505,16 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
         return indexPath.item
     }
     
+    /// wrapper for `UICollectionView.performBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)? = nil)`
+    @objc
+    open func performBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)? = nil) {
+        self.collectionView.performBatchUpdates({
+            updates?()
+        }) { (completed) in
+            completion?(completed)
+        }
+    }
+    
     // MARK: - Private functions
     
     fileprivate func commonInit() {
