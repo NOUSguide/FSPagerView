@@ -155,6 +155,8 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
                 if backgroundView.superview != nil {
                     backgroundView.removeFromSuperview()
                 }
+                backgroundView.frame = self.bounds
+                backgroundView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
                 self.insertSubview(backgroundView, at: 0)
                 self.setNeedsLayout()
             }
@@ -250,13 +252,6 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.commonInit()
-    }
-    
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-        self.backgroundView?.frame = self.bounds
-        self.contentView.frame = self.bounds
-        self.collectionView.frame = self.contentView.bounds
     }
     
     open override func willMove(toWindow newWindow: UIWindow?) {
@@ -515,14 +510,16 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     fileprivate func commonInit() {
         
         // Content View
-        let contentView = UIView(frame:CGRect.zero)
+        let contentView = UIView(frame: self.bounds)
+        contentView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         contentView.backgroundColor = UIColor.clear
         self.addSubview(contentView)
         self.contentView = contentView
         
         // UICollectionView
         let collectionViewLayout = FSPagerViewLayout()
-        let collectionView = FSPagerViewCollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
+        let collectionView = FSPagerViewCollectionView(frame: self.contentView.bounds, collectionViewLayout: collectionViewLayout)
+        collectionView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = UIColor.clear
