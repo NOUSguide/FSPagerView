@@ -147,6 +147,16 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
         }
     }
     
+    @IBInspectable
+    open var isScrollEnabled: Bool {
+        get {
+            return self.collectionView.isScrollEnabled
+        }
+        set {
+            self.collectionView.isScrollEnabled = newValue
+        }
+    }
+
     /// The background view of the pager view.
     @IBInspectable
     open var backgroundView: UIView? {
