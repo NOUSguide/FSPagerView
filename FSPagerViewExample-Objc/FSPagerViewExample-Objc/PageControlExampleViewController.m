@@ -81,21 +81,21 @@
         case 0: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
             cell.textLabel.text = self.pageControlStyles[indexPath.row];
-            cell.accessoryType = self.styleIndex==indexPath.row ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.styleIndex == indexPath.row ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
         case 1: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"slider_cell"];
             UISlider *slider = cell.contentView.subviews.firstObject;
             slider.tag = indexPath.section;
-            slider.value = (self.pageControl.itemSpacing-6.0)/10.0;
+            slider.value = (self.pageControl.itemWidth - 6.0) / 10.0;
             return cell;
         }
         case 2: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"slider_cell"];
             UISlider *slider = cell.contentView.subviews.firstObject;
             slider.tag = indexPath.section;
-            slider.value = (self.pageControl.interitemSpacing-6.0)/10.0;
+            slider.value = (self.pageControl.interitemSpacing - 6.0) / 10.0;
             return cell;
         }
         case 3: {
@@ -151,7 +151,7 @@
 
 - (FSPagerViewCell *)pagerView:(FSPagerView *)pagerView cellForItemAtIndex:(NSInteger)index
 {
-    FSPagerViewCell *cell = [pagerView dequeueReusableCellWithReuseIdentifier:@"cell" atIndex:index];
+    FSPagerViewCell *cell = (FSPagerViewCell *)[pagerView dequeueReusableCellWithReuseIdentifier:@"cell" atIndex:index];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
     cell.imageView.image = [UIImage imageNamed:self.imageNames[index]];
     return cell;
@@ -172,7 +172,7 @@
 {
     switch (sender.tag) {
         case 1: {
-            self.pageControl.itemSpacing = 6.0 + sender.value*10.0; // [6 - 16]
+            self.pageControl.itemWidth = 6.0 + sender.value * 10.0; // [6 - 16]
             // Redraw UIBezierPath
             if (self.styleIndex == 3 || self.styleIndex == 4) {
                 self.styleIndex = self.styleIndex;
@@ -269,19 +269,19 @@
 // ⭐️
 - (UIBezierPath *)starPath
 {
-    CGFloat width = self.pageControl.itemSpacing;
-    CGFloat height = self.pageControl.itemSpacing;
+    CGFloat width = self.pageControl.itemWidth;
+    CGFloat height = self.pageControl.itemWidth;
     UIBezierPath *starPath = [[UIBezierPath alloc] init];
-    [starPath moveToPoint:CGPointMake(width*0.5, 0)];
-    [starPath addLineToPoint:CGPointMake(width*0.677, height*0.257)];
-    [starPath addLineToPoint:CGPointMake(width*0.975, height*0.345)];
-    [starPath addLineToPoint:CGPointMake(width*0.785, height*0.593)];
-    [starPath addLineToPoint:CGPointMake(width*0.794, height*0.905)];
-    [starPath addLineToPoint:CGPointMake(width*0.5, height*0.8)];
-    [starPath addLineToPoint:CGPointMake(width*0.206, height*0.905)];
-    [starPath addLineToPoint:CGPointMake(width*0.215, height*0.593)];
-    [starPath addLineToPoint:CGPointMake(width*0.025, height*0.345)];
-    [starPath addLineToPoint:CGPointMake(width*0.323, height*0.257)];
+    [starPath moveToPoint:CGPointMake(width * 0.5, 0)];
+    [starPath addLineToPoint:CGPointMake(width * 0.677, height * 0.257)];
+    [starPath addLineToPoint:CGPointMake(width * 0.975, height * 0.345)];
+    [starPath addLineToPoint:CGPointMake(width * 0.785, height * 0.593)];
+    [starPath addLineToPoint:CGPointMake(width * 0.794, height * 0.905)];
+    [starPath addLineToPoint:CGPointMake(width * 0.5, height * 0.8)];
+    [starPath addLineToPoint:CGPointMake(width * 0.206, height * 0.905)];
+    [starPath addLineToPoint:CGPointMake(width * 0.215, height * 0.593)];
+    [starPath addLineToPoint:CGPointMake(width * 0.025, height * 0.345)];
+    [starPath addLineToPoint:CGPointMake(width * 0.323, height * 0.257)];
     [starPath closePath];
     return starPath;
 }
@@ -289,26 +289,26 @@
 // ❤️
 - (UIBezierPath *)heartPath
 {
-    CGFloat width = self.pageControl.itemSpacing;
-    CGFloat height = self.pageControl.itemSpacing;
+    CGFloat width = self.pageControl.itemWidth;
+    CGFloat height = self.pageControl.itemWidth;
     UIBezierPath *heartPath = [[UIBezierPath alloc] init];
-    [heartPath moveToPoint:CGPointMake(width*0.5, height)];
-    [heartPath addCurveToPoint:CGPointMake(0, height*0.25)
-                 controlPoint1:CGPointMake(width*0.5, height*0.75)
-                 controlPoint2:CGPointMake(0, height*0.5)];
-    [heartPath addArcWithCenter:CGPointMake(width*0.25, height*0.25)
-                         radius:width*0.25
+    [heartPath moveToPoint:CGPointMake(width * 0.5, height)];
+    [heartPath addCurveToPoint:CGPointMake(0, height * 0.25)
+                 controlPoint1:CGPointMake(width * 0.5, height * 0.75)
+                 controlPoint2:CGPointMake(0, height * 0.5)];
+    [heartPath addArcWithCenter:CGPointMake(width * 0.25, height * 0.25)
+                         radius:width * 0.25
                      startAngle:M_PI
                        endAngle:0
                       clockwise:YES];
-    [heartPath addArcWithCenter:CGPointMake(width*0.75, height*0.25)
-                         radius:width*0.25
+    [heartPath addArcWithCenter:CGPointMake(width * 0.75, height * 0.25)
+                         radius:width * 0.25
                      startAngle:M_PI
                        endAngle:0
                       clockwise:YES];
-    [heartPath addCurveToPoint:CGPointMake(width*0.5, height)
-                 controlPoint1:CGPointMake(width, height*0.5)
-                 controlPoint2:CGPointMake(width*0.5, height*0.75)];
+    [heartPath addCurveToPoint:CGPointMake(width * 0.5, height)
+                 controlPoint1:CGPointMake(width, height * 0.5)
+                 controlPoint2:CGPointMake(width * 0.5, height * 0.75)];
     [heartPath closePath];
     return heartPath;
 }
