@@ -84,7 +84,7 @@ public enum FSPagerViewScrollDirection: Int {
 open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelegate {
     
     // MARK: - Public properties
-
+    
     @IBOutlet open weak var dataSource: FSPagerViewDataSource?
     @IBOutlet open weak var delegate: FSPagerViewDelegate?
     
@@ -562,14 +562,14 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     fileprivate func nearbyIndexPath(for index: Int) -> IndexPath {
         // Is there a better algorithm?
         let currentIndex = self.currentIndex
-        let currentSection = self.centermostIndexPath.section
-        if abs(currentIndex-index) <= self.numberOfItems/2 {
+        let currentSection = self.centermostIndexPath.section // can be 0,0 if collectionview isn't ready yet (didn't call numberOfSections(in collectionView: UICollectionView))
+        
+        if abs(currentIndex - index) <= self.numberOfItems / 2 {
             return IndexPath(item: index, section: currentSection)
-        } else if (index-currentIndex >= 0) {
-            return IndexPath(item: index, section: currentSection-1)
+        } else if (index - currentIndex >= 0) {
+            return IndexPath(item: index, section: max(currentSection - 1, 0))
         } else {
-            return IndexPath(item: index, section: currentSection+1)
+            return IndexPath(item: index, section: currentSection + 1)
         }
     }
-    
 }
