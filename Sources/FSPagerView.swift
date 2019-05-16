@@ -217,6 +217,19 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
         return fmod(CGFloat(scrollOffset), CGFloat(self.numberOfItems))
     }
     
+    /// A value indicates the content offset of scrollView.
+    @objc
+    open var scrollViewOffset: CGPoint {
+        set { self.collectionView.contentOffset = newValue }
+        get { return self.collectionView.contentOffset }
+    }
+    
+    /// Returns collection view's content size.
+    @objc
+    open var scrollViewSize: CGSize {
+        return self.collectionView.contentSize
+    }
+    
     /// The underlying gesture recognizer for pan gestures.
     @objc
     open var panGestureRecognizer: UIPanGestureRecognizer {
