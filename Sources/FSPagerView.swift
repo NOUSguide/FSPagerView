@@ -140,6 +140,13 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
         get { return self.collectionView.isScrollEnabled }
     }
     
+    /// A Boolean value that determines whether cell snapping is enabled. Default is true.
+    @IBInspectable
+    open var isSnappingEnabled: Bool {
+        set { self.collectionViewLayout.isSnappingEnabled = newValue }
+        get { return self.collectionViewLayout.isSnappingEnabled }
+    }
+    
     /// A Boolean value that controls whether the pager view bounces past the edge of content and back again.
     @IBInspectable
     open var bounces: Bool {

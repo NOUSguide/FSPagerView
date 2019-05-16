@@ -14,6 +14,7 @@ class FSPagerViewLayout: UICollectionViewLayout {
     internal var leadingSpacing: CGFloat = 0
     internal var itemSpacing: CGFloat = 0
     internal var needsReprepare = true
+    internal var isSnappingEnabled = true
     internal var scrollDirection: FSPagerView.ScrollDirection = .horizontal
     
     open override class var layoutAttributesClass: AnyClass {
@@ -149,7 +150,7 @@ class FSPagerViewLayout: UICollectionViewLayout {
     }
     
     override open func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
-        guard let collectionView = self.collectionView, let pagerView = self.pagerView else {
+        guard let collectionView = self.collectionView, let pagerView = self.pagerView, self.isSnappingEnabled == true else {
             return proposedContentOffset
         }
         var proposedContentOffset = proposedContentOffset
