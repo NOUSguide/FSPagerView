@@ -209,6 +209,13 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
         return self.collectionView.isTracking
     }
     
+    /// A value indicates the decelerationRate of scrollView.
+    @objc
+    open var decelerationRate: UIScrollView.DecelerationRate {
+        set { self.collectionView.decelerationRate = newValue }
+        get { return self.collectionView.decelerationRate }
+    }
+    
     /// The percentage of x position at which the origin of the content view is offset from the origin of the pagerView view.
     @objc
     open var scrollOffset: CGFloat {
