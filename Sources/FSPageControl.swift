@@ -230,10 +230,13 @@ open class FSPageControl: UIControl {
         self.needsUpdateIndicators = false
         self.contentView.isHidden = self.hidesForSinglePage && self.numberOfPages <= 1
         if !self.contentView.isHidden {
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
             self.indicatorLayers.forEach { (layer) in
                 layer.isHidden = false
                 self.updateIndicatorAttributes(for: layer)
             }
+            CATransaction.commit()
         }
     }
     
